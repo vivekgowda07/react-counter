@@ -1,34 +1,35 @@
 import { useState } from 'react';
 import './App.css';
-import Footer from './components/Footer';
-import Header from './components/Header';
+
 
 function App() {
-  const [counter,setCounter] = useState(0);
+  const [task,setTask] = useState([
+    {id: 5271, name: "Record React Lectures", completed: true}, 
+    {id: 7825, name: "Edit React Lectures", completed: false}, 
+    {id: 8391, name: "Watch Lectures", completed: false}
+  ]);
 
-  function handleAdd(){
-    setCounter(
-      counter+1
-    )
-    }
-    function handleSub(){
-      setCounter(
-        counter-1
-      )  
+  const [show, setShow] = useState(true)
+
+  function handleDelete(id){
+    setTask(task.filter(task => task.id !== id))
   }
-  function handleReset(){
-    setCounter(0)
-}
 
   return (
     <>
     <div className='App'>
-      <div className="box">
-        <p>{counter}</p>
-        <button onClick={handleAdd} className='add' name="button">Add</button>
-        <button onClick={handleSub} className='sub' name="button">Sub</button>
-        <button onClick={handleReset} className='reset' name="button">Reset</button>
-      </div>
+      <ul>
+        <button className='trigger' onClick={() => setShow(!show)}>trigger</button>
+        {
+         show && task.map((task) =>(
+            <li key={task.id} className={task.completed ? "completed" : "incomplete"}>
+              <span>{task.id}-{task.name}</span>
+              <button onClick={() => handleDelete(task.id)} className='delete'>Delete</button>
+            </li>
+          ))
+        }
+      </ul>
+     
     </div>
     </>
   );
